@@ -1,52 +1,24 @@
 name: Baidu Cookie Injector
-description: 在请求百度域名时自动注入自定义 Cookie（支持用户配置）
+description: 在请求百度域名时注入自定义 Cookie
 author: Violte
-icon: https://www.baidu.com/favicon.ico
-homepage: https://github.com/jae-jae/egern-baidu-cookie-injector
 
-# 环境变量配置（用户可在 UI 中设置）
 env_schema:
-  - name: COOKIE_NAME
-    label: Cookie 名称
-    type: text
-    default: abc
-    description: 要注入的 Cookie 名称
-  - name: COOKIE_VALUE
-    label: Cookie 值
-    type: text
-    default: "123"
-    description: 要注入的 Cookie 值
+  COOKIE_NAME:
+    name: Cookie 名称
+    default_value: abc
+  COOKIE_VALUE:
+    name: Cookie 值
+    default_value: "123"
 
-# 匹配规则
 rules:
   - DOMAIN-SUFFIX,baidu.com
-  - DOMAIN-SUFFIX,baidu.com.cn
-  - DOMAIN-SUFFIX,baidustatic.com
-  - DOMAIN-SUFFIX,bdstatic.com
-  - DOMAIN-SUFFIX,bdimg.com
 
-# MITM 解密配置（HTTPS 需要）
 mitm:
-  - "*.baidu.com"
-  - "*.baidu.com.cn"
-  - "*.baidustatic.com"
-  - "*.bdstatic.com"
-  - "*.bdimg.com"
+  hostnames:
+    - "*.baidu.com"
 
-# 脚本配置（远程引用）
 scriptings:
-  - type: http-request
-    pattern: ^https?://([a-zA-Z0-9-]+\.)?baidu\.com
-    script_path: https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/scripts/inject-cookie.js
-
-  - type: http-request
-    pattern: ^https?://([a-zA-Z0-9-]+\.)?baidustatic\.com
-    script_path: https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/scripts/inject-cookie.js
-
-  - type: http-request
-    pattern: ^https?://([a-zA-Z0-9-]+\.)?bdstatic\.com
-    script_path: https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/scripts/inject-cookie.js
-
-  - type: http-request
-    pattern: ^https?://([a-zA-Z0-9-]+\.)?bdimg\.com
-    script_path: https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/scripts/inject-cookie.js
+  - http_request:
+      name: 注入 Cookie
+      match: "^https?://([a-zA-Z0-9-]+\\.)?baidu\\.com"
+      script_url: "https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/inject-cookie.js"
