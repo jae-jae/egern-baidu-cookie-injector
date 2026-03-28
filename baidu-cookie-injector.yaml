@@ -5,13 +5,15 @@ author: Violte
 env_schema:
   COOKIE_NAME:
     name: Cookie 名称
-    default_value: abc
+    default_value: "abc"
   COOKIE_VALUE:
     name: Cookie 值
     default_value: "123"
 
 rules:
-  - DOMAIN-SUFFIX,baidu.com
+  - domain_suffix:
+      match: baidu.com
+      policy: PROXY
 
 mitm:
   hostnames:
