@@ -1,0 +1,118 @@
+name: Baidu Cookie Injector
+description: 在请求百度域名时自动注入自定义 Cookie (abc=123)
+author: Violte
+icon: https://www.baidu.com/favicon.ico
+homepage: https://github.com/jae-jae/egern-baidu-cookie-injector
+
+# 匹配规则
+rules:
+  - DOMAIN-SUFFIX,baidu.com
+  - DOMAIN-SUFFIX,baidu.com.cn
+  - DOMAIN-SUFFIX,baidustatic.com
+  - DOMAIN-SUFFIX,bdstatic.com
+  - DOMAIN-SUFFIX,bdimg.com
+
+# MITM 解密配置（HTTPS 需要）
+mitm:
+  - "*.baidu.com"
+  - "*.baidu.com.cn"
+  - "*.baidustatic.com"
+  - "*.bdstatic.com"
+  - "*.bdimg.com"
+
+# 脚本配置
+scriptings:
+  - type: http-request
+    pattern: ^https?://([a-zA-Z0-9-]+\.)?baidu\.com
+    script: |
+      // 注入自定义 Cookie
+      const COOKIE_NAME = 'abc';
+      const COOKIE_VALUE = '123';
+      
+      // 获取现有 Cookie
+      let existingCookies = $request.headers['Cookie'] || '';
+      
+      // 检查是否已存在该 Cookie
+      if (existingCookies.includes(COOKIE_NAME + '=')) {
+        // 已存在，不重复注入
+        console.log('[Baidu Cookie Injector] Cookie already exists, skipping injection');
+        return {};
+      }
+      
+      // 注入新 Cookie
+      let newCookies = existingCookies 
+        ? existingCookies + '; ' + COOKIE_NAME + '=' + COOKIE_VALUE
+        : COOKIE_NAME + '=' + COOKIE_VALUE;
+      
+      $request.headers['Cookie'] = newCookies;
+      console.log('[Baidu Cookie Injector] Injected cookie: ' + COOKIE_NAME + '=' + COOKIE_VALUE);
+      
+      return {
+        headers: $request.headers
+      };
+
+  - type: http-request
+    pattern: ^https?://([a-zA-Z0-9-]+\.)?baidustatic\.com
+    script: |
+      const COOKIE_NAME = 'abc';
+      const COOKIE_VALUE = '123';
+      
+      let existingCookies = $request.headers['Cookie'] || '';
+      
+      if (existingCookies.includes(COOKIE_NAME + '=')) {
+        return {};
+      }
+      
+      let newCookies = existingCookies 
+        ? existingCookies + '; ' + COOKIE_NAME + '=' + COOKIE_VALUE
+        : COOKIE_NAME + '=' + COOKIE_VALUE;
+      
+      $request.headers['Cookie'] = newCookies;
+      
+      return {
+        headers: $request.headers
+      };
+
+  - type: http-request
+    pattern: ^https?://([a-zA-Z0-9-]+\.)?bdstatic\.com
+    script: |
+      const COOKIE_NAME = 'abc';
+      const COOKIE_VALUE = '123';
+      
+      let existingCookies = $request.headers['Cookie'] || '';
+      
+      if (existingCookies.includes(COOKIE_NAME + '=')) {
+        return {};
+      }
+      
+      let newCookies = existingCookies 
+        ? existingCookies + '; ' + COOKIE_NAME + '=' + COOKIE_VALUE
+        : COOKIE_NAME + '=' + COOKIE_VALUE;
+      
+      $request.headers['Cookie'] = newCookies;
+      
+      return {
+        headers: $request.headers
+      };
+
+  - type: http-request
+    pattern: ^https?://([a-zA-Z0-9-]+\.)?bdimg\.com
+    script: |
+      const COOKIE_NAME = 'abc';
+      const COOKIE_VALUE = '123';
+      
+      let existingCookies = $request.headers['Cookie'] || '';
+      
+      if (existingCookies.includes(COOKIE_NAME + '=')) {
+        return {};
+      }
+      
+      let newCookies = existingCookies 
+        ? existingCookies + '; ' + COOKIE_NAME + '=' + COOKIE_VALUE
+        : COOKIE_NAME + '=' + COOKIE_VALUE;
+      
+      $request.headers['Cookie'] = newCookies;
+      
+      return {
+        headers: $request.headers
+      };
