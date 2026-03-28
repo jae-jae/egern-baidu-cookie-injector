@@ -8,11 +8,6 @@ env_schema:
   COOKIE_VALUE:
     name: "Cookie 值"
 
-rules:
-  - domain_suffix:
-      match: "baidu.com"
-      policy: "PROXY"
-
 mitm:
   hostnames:
     - "*.baidu.com"
