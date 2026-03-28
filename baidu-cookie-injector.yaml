@@ -1,19 +1,19 @@
-name: Baidu Cookie Injector
-description: 在请求百度域名时注入自定义 Cookie
-author: Violte
+name: "Baidu Cookie Injector"
+description: "在请求百度域名时注入自定义 Cookie"
+author: "Violte"
 
 env_schema:
   COOKIE_NAME:
-    name: Cookie 名称
+    name: "Cookie 名称"
     default_value: "abc"
   COOKIE_VALUE:
-    name: Cookie 值
+    name: "Cookie 值"
     default_value: "123"
 
 rules:
   - domain_suffix:
-      match: baidu.com
-      policy: PROXY
+      match: "baidu.com"
+      policy: "PROXY"
 
 mitm:
   hostnames:
@@ -21,6 +21,6 @@ mitm:
 
 scriptings:
   - http_request:
-      name: 注入 Cookie
+      name: "注入 Cookie"
       match: "^https?://([a-zA-Z0-9-]+\\.)?baidu\\.com"
       script_url: "https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/inject-cookie.js"
