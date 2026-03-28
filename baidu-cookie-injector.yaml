@@ -1,8 +1,21 @@
 name: Baidu Cookie Injector
-description: 在请求百度域名时自动注入自定义 Cookie (abc=123)
+description: 在请求百度域名时自动注入自定义 Cookie（支持用户配置）
 author: Violte
 icon: https://www.baidu.com/favicon.ico
 homepage: https://github.com/jae-jae/egern-baidu-cookie-injector
+
+# 环境变量配置（用户可在 UI 中设置）
+env_schema:
+  - name: COOKIE_NAME
+    label: Cookie 名称
+    type: text
+    default: abc
+    description: 要注入的 Cookie 名称
+  - name: COOKIE_VALUE
+    label: Cookie 值
+    type: text
+    default: "123"
+    description: 要注入的 Cookie 值
 
 # 匹配规则
 rules:
@@ -20,99 +33,20 @@ mitm:
   - "*.bdstatic.com"
   - "*.bdimg.com"
 
-# 脚本配置
+# 脚本配置（远程引用）
 scriptings:
   - type: http-request
     pattern: ^https?://([a-zA-Z0-9-]+\.)?baidu\.com
-    script: |
-      // 注入自定义 Cookie
-      const COOKIE_NAME = 'abc';
-      const COOKIE_VALUE = '123';
-      
-      // 获取现有 Cookie
-      let existingCookies = $request.headers['Cookie'] || '';
-      
-      // 检查是否已存在该 Cookie
-      if (existingCookies.includes(COOKIE_NAME + '=')) {
-        // 已存在，不重复注入
-        console.log('[Baidu Cookie Injector] Cookie already exists, skipping injection');
-        return {};
-      }
-      
-      // 注入新 Cookie
-      let newCookies = existingCookies 
-        ? existingCookies + '; ' + COOKIE_NAME + '=' + COOKIE_VALUE
-        : COOKIE_NAME + '=' + COOKIE_VALUE;
-      
-      $request.headers['Cookie'] = newCookies;
-      console.log('[Baidu Cookie Injector] Injected cookie: ' + COOKIE_NAME + '=' + COOKIE_VALUE);
-      
-      return {
-        headers: $request.headers
-      };
+    script_path: https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/scripts/inject-cookie.js
 
   - type: http-request
     pattern: ^https?://([a-zA-Z0-9-]+\.)?baidustatic\.com
-    script: |
-      const COOKIE_NAME = 'abc';
-      const COOKIE_VALUE = '123';
-      
-      let existingCookies = $request.headers['Cookie'] || '';
-      
-      if (existingCookies.includes(COOKIE_NAME + '=')) {
-        return {};
-      }
-      
-      let newCookies = existingCookies 
-        ? existingCookies + '; ' + COOKIE_NAME + '=' + COOKIE_VALUE
-        : COOKIE_NAME + '=' + COOKIE_VALUE;
-      
-      $request.headers['Cookie'] = newCookies;
-      
-      return {
-        headers: $request.headers
-      };
+    script_path: https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/scripts/inject-cookie.js
 
   - type: http-request
     pattern: ^https?://([a-zA-Z0-9-]+\.)?bdstatic\.com
-    script: |
-      const COOKIE_NAME = 'abc';
-      const COOKIE_VALUE = '123';
-      
-      let existingCookies = $request.headers['Cookie'] || '';
-      
-      if (existingCookies.includes(COOKIE_NAME + '=')) {
-        return {};
-      }
-      
-      let newCookies = existingCookies 
-        ? existingCookies + '; ' + COOKIE_NAME + '=' + COOKIE_VALUE
-        : COOKIE_NAME + '=' + COOKIE_VALUE;
-      
-      $request.headers['Cookie'] = newCookies;
-      
-      return {
-        headers: $request.headers
-      };
+    script_path: https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/scripts/inject-cookie.js
 
   - type: http-request
     pattern: ^https?://([a-zA-Z0-9-]+\.)?bdimg\.com
-    script: |
-      const COOKIE_NAME = 'abc';
-      const COOKIE_VALUE = '123';
-      
-      let existingCookies = $request.headers['Cookie'] || '';
-      
-      if (existingCookies.includes(COOKIE_NAME + '=')) {
-        return {};
-      }
-      
-      let newCookies = existingCookies 
-        ? existingCookies + '; ' + COOKIE_NAME + '=' + COOKIE_VALUE
-        : COOKIE_NAME + '=' + COOKIE_VALUE;
-      
-      $request.headers['Cookie'] = newCookies;
-      
-      return {
-        headers: $request.headers
-      };
+    script_path: https://raw.githubusercontent.com/jae-jae/egern-baidu-cookie-injector/main/scripts/inject-cookie.js
