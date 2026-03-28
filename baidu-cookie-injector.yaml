@@ -5,10 +5,8 @@ author: "Violte"
 env_schema:
   COOKIE_NAME:
     name: "Cookie 名称"
-    default_value: "abc"
   COOKIE_VALUE:
     name: "Cookie 值"
-    default_value: "123"
 
 rules:
   - domain_suffix:

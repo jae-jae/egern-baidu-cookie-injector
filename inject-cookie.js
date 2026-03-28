@@ -2,8 +2,13 @@ export default async function(ctx) {
   console.log('[Baidu Cookie Injector] 脚本开始执行');
   console.log('[Baidu Cookie Injector] 请求 URL:', ctx.request.url);
 
-  const cookieName = ctx.env.COOKIE_NAME || 'abc';
-  const cookieValue = ctx.env.COOKIE_VALUE || '123';
+  const cookieName = ctx.env.COOKIE_NAME;
+  const cookieValue = ctx.env.COOKIE_VALUE;
+
+  if (!cookieName || !cookieValue) {
+    console.log('[Baidu Cookie Injector] 错误: 未配置 Cookie 名称或值');
+    return;
+  }
 
   console.log('[Baidu Cookie Injector] 配置 - Cookie名称:', cookieName);
   console.log('[Baidu Cookie Injector] 配置 - Cookie值:', cookieValue);
